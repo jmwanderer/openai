@@ -1,0 +1,130 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hangman Game",
+    "description": "Generates and tracks games of hangman.",
+    "version": "v1.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://www.nov95.net/hangman"
+    }
+  ],
+  "paths": {
+    "/newgame": {
+      "get": {
+        "description": "Start a new game of hangman.",
+        "operationId": "StartNewGame",
+        "parameters": [
+          {
+            "name": "word_size",
+            "in": "query",
+            "description": "Size of the word to guess.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "max_wrong_guesses",
+            "in": "query",
+            "description": "The number of wrong guesses allowed.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "game_id": {
+                      "type": "string",
+                      "description": "Unique identifier for the game.",
+                    },
+                    "word": {
+                      "type": "string",
+                      "description": "The secret word.",
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+      "/record_guess/{game_id}": {
+      "get": {
+        "description": "Record a guess made by the player.",
+        "operationId": "RecordGuess",        
+        "parameters": [
+          {
+            "name": "game_id",
+            "in": "path",
+            "description": "Unique identifier for the game.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "letter",
+            "in": "query",
+            "description": "The letter guessed by the player.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "found": {
+                      "type": "boolean",
+                      "description": "Was the letter found in the word.",
+                    },
+                    "visible_word": {
+                      "type": "string",
+                      "description": "The current view of the word.",
+                    },
+                    "word": {
+                      "type": "string",
+                      "description": "The secret word.",
+                    },
+                    "remaining_guesses": {
+                      "type": "integer",
+                      "description": "The number of remaining guesses for the player.",
+                    },
+                    "game_status": {
+                      "type": "string",
+                      "enum": ["won", "lost", "inprogress"],
+                      "description": "Current state of the game",
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+  },
+  "components": {
+    "schemas": {}
+  }
+}

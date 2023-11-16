@@ -1,0 +1,17 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "Hangman Game",
+    "name_for_model": "hangman",
+    "description_for_human": "Play hangman.",
+    "description_for_model": "Plugin for the hangman game.",
+    "auth": {
+      "type": "none"
+    },
+    "api": {
+      "type": "openapi",
+      "url": "http://localhost:5000/openapi.json"
+    },
+    "logo_url": "http://localhost:5000/static/logo.png",
+    "contact_email": "legal@nov95.com",
+    "legal_info_url": "http://nov95.com/legal"
+  }
