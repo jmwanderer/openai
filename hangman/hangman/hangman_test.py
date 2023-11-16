@@ -18,7 +18,7 @@ class GameTestCase(unittest.TestCase):
     self.assertEqual(self.game.get_game_state().status, hangman.GAME_WON)
 
   def testSimpleLoss(self):
-    self.game.new_game(6, 12)
+    self.game.new_game(6, 8)
     self.game.word = 'cowboy'    
     print(self.game.get_game_state().to_string())
     guesses = "acnymvbxwkjgdf"
