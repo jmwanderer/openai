@@ -1,5 +1,6 @@
 import os
 import os.path
+import functools
 
 import flask
 from flask import Flask
@@ -99,9 +100,31 @@ def save_game_record(game_id, game):
   pickle.dump(game, f)
   f.close()
   os.replace(file_path + '.tmp', file_path)
-  
+
+def extract_auth_key(headers):
+  auth = request.headers.get('Authorization')
+  if auth is not None:
+    index = auth.find(' ')
+    if index > 0:
+      return auth[index+1:]
+  return None
+
+def login_required(view):
+  @functools.wraps(view)
+  def wrapped_view(**kwargs):
+    if current_app.config.get('HANGMAN_AUTH_KEY'):
+      # Verify auth matches
+      auth = extract_auth_key(request.headers)
+      if auth != current_app.config['HANGMAN_AUTH_KEY']:
+        return flask.Response(
+          "Invalid authorization header",
+          status=401)
+    return view(**kwargs)
+  return wrapped_view
+
 
 @bp.route('/newgame')
+@login_required
 def new_game():
   size = request.args.get('word_size', '9')
   max_wrong_guesses = request.args.get('max_wrong_guesses', '8')
@@ -119,6 +142,7 @@ def new_game():
 
 
 @bp.route('/record_guess/<game_id>')
+@login_required
 def record_guess(game_id):
   letter = request.args.get('letter')
   game_id = werkzeug.utils.secure_filename(game_id)
