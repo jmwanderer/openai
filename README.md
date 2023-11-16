@@ -25,4 +25,5 @@ Small thought of the day generator
 Very rough experimnet in pulling in and processing search results with
 OpenAI APIs
 
+(to be added)
 
