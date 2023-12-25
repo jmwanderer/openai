@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DocServe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'/>
+    <style>
+      body {
+	  font-family: 'Open Sans';
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <body style="background-color:#f8f9f8;">
+    <div style="text-align:center;">
+      <a href="{{ url_for('docserve.list_docs', q=user_id) }}">
+        All Documents
+      </a>
+    </div>
+    <div style="width:100%;display:flex;padding:1em;">
+      <div style="width: 30%;float:left;text-align:right;">
+        Created: {{ doc.getCreateDate() }}
+      </div>
+      <div style="width: 30%;float:center;text-align:center;">
+        Updated: {{ doc.getModifyDate() }}
+      </div>	 
+      <div style="width: 30%;float:right;text-align:left;">
+        <a href="{{ url_for('docserve.download_docx', doc_id=doc.docId(), q=user_id) }}">
+          Download docx
+        </a>
+      </div>	 
+    </div>
+    
+    <div style="width:100%;display:flex;justify-content:center;">      
+      <div style="border-width:thin;border-style:solid;border-color:silver;padding:5em;padding-top:3em;width:680px;justify-content:left;background-color:white;">
+        {{ doc.titleElement.emitHTML(context) | safe }}
+        <h2>Abstract</h2>
+        {{ doc.abstractElement.emitHTML(context) | safe }}
+        <h2>Outline</h2>
+        {{ doc.outlineElement.emitHTML(context) | safe }}
+        {% for element in doc.elements %}
+        {{ element.emitHTML(context) | safe }}
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+    <script>
+      url = "{{ url_for('docserve.check', doc_id=doc.docId(), q=user_id) }}";
+      
+      async function poll_changes() {
+          mtime = 0
+          while (true) {
+              console.log("going to sleep")
+              sleep = new Promise(resolve => setTimeout(resolve, 5000));
+              await sleep;
+              fetch(url).then(response => response.json())
+                  .then(data => {
+                      if (mtime == 0) {
+                          mtime = data.mtime;
+                      } else {
+                          if (mtime != data.mtime) {
+                              location.reload();                              
+                          }
+                      }});
+          }
+      }
+      poll_changes()
+    </script>
+</html>
+

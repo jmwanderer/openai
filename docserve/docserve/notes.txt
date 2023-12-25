@@ -1,0 +1,82 @@
+TODO
+----
+
+change ID to number
+finish REST API
+Look at using schema components to reduce replication in openapi.json
+
+scrub HTML using whitelist
+export docx
+
+format article as more of a blog post - looking better - display
+- fix centering
+- add boundaries to page
+- try putting everything in div with type and number
+
+
+
+
+
+Starting Python
+---------------
+
+python3 -m waitress  --port 8084 --url-prefix=docserve --call docserve.server:create_app
+
+
+Server Send Events
+---------------------
+
+Content-Type: text/event-stream
+
+JS
+
+const evtSource = new EventSource("path");
+evtSource.onmessage = (event) => {
+ ...
+}
+
+https://maxhalford.github.io/blog/flask-sse-no-deps/
+
+var source = new EventSource('/stream');
+source.onmessage = function (event) {
+     alert(event.data);
+};
+
+def event_stream():
+    pubsub = red.pubsub()
+    pubsub.subscribe('chat')
+    for message in pubsub.listen():
+        print message
+        yield 'data: %s\n\n' % message['data']
+
+
+
+@app.route('/stream')
+def stream():
+    return flask.Response(event_stream(),
+                          mimetype="text/event-stream")
+
+
+
+Headers:
+
+2023-11-20 09:54:03,709:INFO:root:request: <Request 'https://www.nov95.net/docserve/docs' [POST]>
+2023-11-20 09:54:03,709:INFO:root:Host: www.nov95.net
+2023-11-20 09:54:03,709:INFO:root:Content-Type: application/json
+2023-11-20 09:54:03,709:INFO:root:User-Agent: Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot
+2023-11-20 09:54:03,709:INFO:root:Openai-Ephemeral-User-Id: 5bcdfe00-085a-5f5e-8071-724332240c27
+2023-11-20 09:54:03,710:INFO:root:Openai-Conversation-Id: 38c870e8-50c5-5252-a4b4-a38f059780d4
+2023-11-20 09:54:03,710:INFO:root:Openai-Gpt-Id: g-3TgUI6VRK
+2023-11-20 09:54:03,710:INFO:root:X-Datadog-Trace-Id: 11888170007624917231
+2023-11-20 09:54:03,710:INFO:root:X-Datadog-Parent-Id: 12460283212053982640
+2023-11-20 09:54:03,710:INFO:root:X-Datadog-Sampling-Priority: 0
+2023-11-20 09:54:03,710:INFO:root:Traceparent: 00-0000000000000000a4fb43a2bdefa0ef-acebd1905f3dadb0-00
+2023-11-20 09:54:03,710:INFO:root:Tracestate: dd=s:0
+2023-11-20 09:54:03,711:INFO:root:Accept: */*
+2023-11-20 09:54:03,711:INFO:root:Accept-Encoding: gzip, deflate
+2023-11-20 09:54:03,711:INFO:root:X-Forwarded-Proto: https
+2023-11-20 09:54:03,711:INFO:root:X-Forwarded-For: 23.102.140.122
+2023-11-20 09:54:03,711:INFO:root:X-Forwarded-Host: www.nov95.net
+2023-11-20 09:54:03,711:INFO:root:X-Forwarded-Server: www.nov95.net
+2023-11-20 09:54:03,711:INFO:root:Content-Length: 53
+2023-11-20 09:54:03,711:INFO:root:Connection: Keep-Alive

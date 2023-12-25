@@ -1,0 +1,5 @@
+include docserve/static/*
+include docserve/templates/*
+include docserve/schema.sql
+include docserve/docserve.service
+global-exclude *.pyc
