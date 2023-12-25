@@ -1,6 +1,10 @@
 # openai
 Projects based on OpenAI technology
 
+## DocServe / Article Assistant
+
+Experiment in using GPT Actions enabling ChatGPT to build a document.
+
 ## Hangman
 
 Teaching ChatGPT to play the game Hangman using GPT Actions

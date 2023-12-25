@@ -55,7 +55,7 @@ export FLASK_AUTH="secret-key"
 cd openai
 . venv/bin/activate
 cd docserve
-flask --app docserver.server init-db
+flask --app docserver.server run --debug --host=0.0.0.0
 ```
 
 # Run a Production Server
@@ -66,7 +66,9 @@ Good choices for a production service include waitress and Gunicorn.
 cd openai
 . venv/bin/activate
 cd docserve
-waitress --app docserver.server init-db
+waitress --app docserver.server
+python3 -m waitress --call docserve.server:create_app"
+
 ```
 
 # Build a custom GPT
