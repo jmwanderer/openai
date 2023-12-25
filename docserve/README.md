@@ -10,6 +10,9 @@ custom GPT and run the server.
 
 # Install and Configure DocServe
 
+DocServe needs to be accessible over the internet from the OpenAI servers. This can be done by deploying the server on a publicly accessible server or setting up a secure tunnel to a Dev machine. One example of the latter is Microsoft's
+[[Dev tunnels](http://github.com/microsoft/dev-tunnels)]
+
 Ensure you are using Python 3.6 and later.
 ```
 git clone https://github.com/jmwanderer/openai
@@ -61,6 +64,8 @@ flask --app docserver.server run --debug --host=0.0.0.0
 # Run a Production Server
 
 Good choices for a production service include waitress and Gunicorn.
+Consider using a front end reverse proxy (e.g. Apache or Nginx) or
+alternatively hosting service.
 
 ```
 cd openai
