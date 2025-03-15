@@ -24,6 +24,15 @@ Using GPT as a user interface
 
 Small thought of the day generator
 
+Setup with an venv:
+```
+python -m venv/venv
+. ./venv/bin/activate
+pip install openai
+```
+
+Run with: `./run.sh`
+
 ## Search
 
 Very rough experimnet in pulling in and processing search results with
