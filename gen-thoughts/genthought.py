@@ -24,20 +24,20 @@ html = """
   <head style="box-sizing: border-box; border: 0 solid #e5e7eb;"><meta charset="utf-8"><title>Thought of the day.</title></head>
   <body>
     <main>
-      <div style="background:purple; padding: 20px 20px;">
+      <div style="background:lightblue; padding: 20px 20px;">
 	<h1>
-          <span style="color:pink;">Thought Of the Day - ChatGPT</span>
+          <span style="color:black;">Thought Of the Day - ChatGPT</span>
 	</h1>
 	<h2>
-          <span style="color:pink;">
+          <span style="color:darkgrey;">
             {weekday} {month} {day}
 	  </span>
 	</h2>
-	<div style="background:orange; padding: 20px 30px;">
+	<div style="background:pink; padding: 20px 30px;">
           {text}
 	</div>
 	<div style="padding: 20px 20px;"></div>
-	<div style="color:pink; padding: 20px 30px;">
+	<div style="color:darkgrey; padding: 20px 30px;">
 	  <p>Prompt: {prompt}
 	</div>
       </div>
@@ -48,18 +48,17 @@ html = """
 
 
 def WriteThought(target_dir):
-  openai.organization = os.getenv("OPENAI_ORG_ID")
-  openai.api_key = os.getenv("OPENAI_API_KEY")
   today  = datetime.datetime.today()
   # Select a prompt based on the day of the week, Monday == 0.
   prompt = prompts[today.weekday()]
 
   # Generate the message with a chat completion.
-  # TODO: consider a regular completion function
-  response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
-                                          messages=[{"role": "user",
-                                                     "content": prompt }])
-  text = response['choices'][0]['message']['content']
+  client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+  response = client.responses.create(model="gpt-4o",
+                                     instructions="You are a clever and funny poet.",
+                                     input=prompt)
+
+  text = response.output_text
 
   # Write info to the log
   fp = open('thought.log.txt', 'a')
